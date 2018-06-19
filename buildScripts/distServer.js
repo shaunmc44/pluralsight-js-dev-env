@@ -1,21 +1,17 @@
 var express = require('express');
 var path = require('path');
 var open = require('open');
+var compression = require('compression');
 
-var webpack = require('webpack');
-var config = require('../webpack.config.dev')
+const port = 3000;
+const app = express();
 
-var port = 3000;
-var app = express();
-const compiler = webpack(config);
+app.use(express.static('dist'));
 
-app.use(require('webpack-dev-middleware')(compiler, {
-	noInfo: true,
-	publicPath: config.output.publicPath
-}));
+app.use(compression());
 
 app.get('/', function(req, res) {
-	res.sendFile(path.join(__dirname, '../src/index.html'));
+	res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 app.get('/users', function(req, res) {
